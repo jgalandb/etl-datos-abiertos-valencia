@@ -13,9 +13,9 @@ Trabajo con el dataset **[Libro Registro Edificios]**, publicado en el portal de
 ```
 etl-datos-abiertos-valencia/
 ├── data/
-│   └── raw/            # CSV descargado (no se sube a GitHub)
+│   └── raw/           
 ├── src/
-│   └── extract.py      # Descarga los datos
+│   └── extract.py    
 ├── requirements.txt
 └── README.md
 ```
@@ -52,8 +52,8 @@ Lo primero ha sido tener Python y Git instalados.
 2. Creación y activacionj un entorno virtual:
 ```bash
    python -m venv venv
-   venv\Scripts\activate        # Windows
-   source venv/bin/activate     # Mac / Linux
+   venv\Scripts\activate      
+   
 ```
 
 3. Instalación de las dependencias:
