@@ -6,7 +6,7 @@ Lo empecé para aprender ingeniería de datos con un caso real, y lo voy amplian
 
 ## Datos que uso
 
-Trabajo con el dataset **[nombre del dataset]**, publicado en el portal de datos abiertos del Ayuntamiento de Valencia ([valencia.opendatasoft.com](https://valencia.opendatasoft.com)). Lo elegí porque [razón sincera: me interesaba, lo uso en el día a día, se actualiza con frecuencia...].
+Trabajo con el dataset **[Libro Registro Edificios]**, publicado en el portal de datos abiertos del Ayuntamiento de Valencia ([opendata.vlci.valencia.es](https://opendata.vlci.valencia.es/dataset/libro-registro-edificios-llibre-registre-edificis)). Lo elegí porque la vivienda es ahora un tema bastante candente y me parece interesante poder trabajar sobre datos de este tipo para consultas o analisis.
 
 ## Cómo está organizado
 
@@ -39,34 +39,34 @@ Voy marcando cada punto según lo termino.
 
 Más adelante: PostgreSQL, Docker y Airflow.
 
-## Cómo ejecutarlo
+## Cómo lo he ejecutado
 
-Necesitas tener Python y Git instalados.
+Lo primero ha sido tener Python y Git instalados.
 
-1. Clona el repositorio:
+1. Clonaje del repositorio:
 ```bash
    git clone https://github.com/[tu-usuario]/etl-datos-abiertos-valencia.git
    cd etl-datos-abiertos-valencia
 ```
 
-2. Crea y activa un entorno virtual:
+2. Creación y activacionj un entorno virtual:
 ```bash
    python -m venv venv
    venv\Scripts\activate        # Windows
    source venv/bin/activate     # Mac / Linux
 ```
 
-3. Instala las dependencias:
+3. Instalación de las dependencias:
 ```bash
    pip install -r requirements.txt
 ```
 
-4. Lanza la extracción:
+4. Lanzamiento de la extracción:
 ```bash
    python src/extract.py
 ```
 
-Si todo va bien, se crea el archivo `data/raw/datos.csv` y el script imprime en pantalla cuántas filas ha descargado.
+Comprobando que todo vaya bien, creo el archivo `data/raw/edificios.csv` y el script imprime en pantalla cuántas filas ha descargado.
 
 ## Lo que estoy aprendiendo
 
@@ -76,4 +76,4 @@ Si todo va bien, se crea el archivo `data/raw/datos.csv` y el script imprime en 
 
 ## Contacto
 
-[Tu nombre] · [LinkedIn](https://www.linkedin.com/in/[tu-perfil]) · [tu-email]
+[Jorge Galán] · [LinkedIn](https://www.linkedin.com/in/[jorgegalandelblanco/]) · [jgalandb@gmail.com]
