@@ -6,6 +6,8 @@ from extract import extract
 
 SALIDA_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 
+COLUMNAS_FECHA = ["f_ord_indi", "f_dogv", "f_resolu", "ap_s_lic_f", "ad_c_deb_f"]
+
 
 def limpiar_nombres(df):
     df = df.copy()
@@ -20,21 +22,37 @@ def limpiar_nombres(df):
 
 def limpiar_textos(df):
     df = df.copy()
-    for col in df.select_dtypes(include="object").columns:
+    for col in df.select_dtypes(include=["object", "string"]).columns:
         df[col] = df[col].str.strip().replace("", pd.NA)
     return df
 
-invalidas = df[df["refcat"].str.len() != 14]
-if not invalidas.empty:
-    print(f"Aviso: {len(invalidas)} referencias catastrales con longitud distinta de 14")
+
+def limpiar_referencias_registro(df):
+    """Libro, tomo, folio y finca son identificadores: se guardan como texto."""
+    df = df.copy()
+    cols = [
+        c for c in df.columns
+        if c.startswith(("l_reg_", "t_reg_", "f_reg_", "fi_reg_"))
+    ]
+    for col in cols:
+        df[col] = (
+            df[col].astype("string")
+            .str.strip()
+            .str.replace(r"\.0$", "", regex=True)
+            .replace("", pd.NA)
+        )
+    return df
 
 
 def convertir_fechas(df):
+    """Las fechas del CSV vienen como milisegundos desde 1970."""
     df = df.copy()
-    cols_fecha = [c for c in df.columns if c.startswith(("f_", "fi_")) or c.endswith("_f")]
-    for col in cols_fecha:
+    for col in COLUMNAS_FECHA:
+        if col not in df.columns:
+            continue
+        numeros = pd.to_numeric(df[col], errors="coerce")
         antes = df[col].notna().sum()
-        df[col] = pd.to_datetime(df[col], errors="coerce", dayfirst=True)
+        df[col] = pd.to_datetime(numeros, unit="ms", errors="coerce")
         despues = df[col].notna().sum()
         if despues < antes:
             print(f"Aviso: {col} perdió {antes - despues} fechas al convertir")
@@ -42,6 +60,7 @@ def convertir_fechas(df):
 
 
 def registros_a_largo(df):
+    """Convierte las columnas l_reg_01..10, t_reg_01..10, etc. en una fila por registro."""
     bloques = []
     for i in range(1, 11):
         n = f"{i:02d}"
@@ -63,6 +82,12 @@ def registros_a_largo(df):
 def transform(df):
     df = limpiar_nombres(df)
     df = limpiar_textos(df)
+
+    invalidas = df[df["refcat"].str.len() != 14]
+    if not invalidas.empty:
+        print(f"Aviso: {len(invalidas)} referencias catastrales con longitud distinta de 14")
+
+    df = limpiar_referencias_registro(df)
     df = convertir_fechas(df)
     df = df.drop_duplicates(subset="refcat")
 
@@ -85,4 +110,3 @@ if __name__ == "__main__":
     print(f"\nEdificios: {edificios.shape[0]} filas, {edificios.shape[1]} columnas")
     print(f"Registros: {registros.shape[0]} filas")
     print(registros.head(10))
-
