@@ -13,9 +13,11 @@ Trabajo con el dataset **[Libro Registro Edificios]**, publicado en el portal de
 ```
 etl-datos-abiertos-valencia/
 ├── data/
-│   └── raw/           
+│   ├── raw/            # CSV descargado
+│   └── processed/      # Datos limpios
 ├── src/
-│   └── extract.py    
+│   ├── extract.py      # Lee el CSV
+│   └── transform.py    # Limpia y reestructura los datos 
 ├── requirements.txt
 └── README.md
 ```
@@ -23,7 +25,7 @@ etl-datos-abiertos-valencia/
 ## Estado del proyecto
 
 - [x] **Extract:** descarga del CSV desde el portal de datos abiertos
-- [ ] **Transform:** limpieza de columnas, tipos de datos, nulos y duplicados con pandas
+- [x] **Transform:** limpieza de columnas, tipos de datos, nulos y duplicados con pandas
 - [ ] **Load:** carga en PostgreSQL con un modelo de tablas sencillo
 - [ ] Un `main.py` que ejecute todo el proceso de seguido
 - [ ] Automatización diaria con Airflow y Docker
@@ -45,7 +47,7 @@ Lo primero ha sido tener Python y Git instalados.
 
 1. Clonaje del repositorio:
 ```bash
-   git clone https://github.com/[tu-usuario]/etl-datos-abiertos-valencia.git
+   git clone https://github.com/[jgalandb]/etl-datos-abiertos-valencia.git
    cd etl-datos-abiertos-valencia
 ```
 
@@ -61,10 +63,21 @@ Lo primero ha sido tener Python y Git instalados.
    pip install -r requirements.txt
 ```
 
-4. Lanzamiento de la extracción:
-```bash
+4. Comprobación de que el CSV del Libro Registro de Edificios está en `data/raw/edificios.csv`.
+
+5. Lanzamiento de la extracción para comprobar que el archivo se lee bien:
+   ```bash
    python src/extract.py
-```
+   ```
+   Imprime el número de filas y columnas, los nombres de las columnas y los valores nulos.
+
+6. Lanzamiento de la transformación:
+   ```bash
+   python src/transform.py
+   ```
+   Limpia los datos y genera dos archivos en `data/processed/`:
+   - `edificios_limpio.csv`: una fila por inmueble.
+   - `registros.csv`: una fila por cada registro asociado a un inmueble, relacionada con la tabla anterior por la referencia catastral (`refcat`).
 
 Comprobando que todo vaya bien, creo el archivo `data/raw/edificios.csv` y el script imprime en pantalla cuántas filas ha descargado.
 
