@@ -2,7 +2,8 @@ from pathlib import Path
 
 import pandas as pd
 
-RUTA_CSV = Path("data/raw/edificios.csv")
+RAIZ = Path(__file__).resolve().parent.parent
+RUTA_CSV = RAIZ / "data" / "raw" / "edificios.csv"
 
 
 def extract():

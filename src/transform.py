@@ -4,7 +4,7 @@ import pandas as pd
 
 from extract import extract
 
-SALIDA_DIR = Path("data/processed")
+SALIDA_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 
 
 def limpiar_nombres(df):
@@ -23,6 +23,10 @@ def limpiar_textos(df):
     for col in df.select_dtypes(include="object").columns:
         df[col] = df[col].str.strip().replace("", pd.NA)
     return df
+
+invalidas = df[df["refcat"].str.len() != 14]
+if not invalidas.empty:
+    print(f"Aviso: {len(invalidas)} referencias catastrales con longitud distinta de 14")
 
 
 def convertir_fechas(df):
@@ -81,3 +85,4 @@ if __name__ == "__main__":
     print(f"\nEdificios: {edificios.shape[0]} filas, {edificios.shape[1]} columnas")
     print(f"Registros: {registros.shape[0]} filas")
     print(registros.head(10))
+
