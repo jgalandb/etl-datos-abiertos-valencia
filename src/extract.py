@@ -10,12 +10,11 @@ def extract():
         raise FileNotFoundError(
             f"No encuentro {RUTA_CSV}. Descarga el CSV y colócalo en data/raw/"
         )
+    
     try:
-        df = pd.read_csv(RUTA_CSV, sep=None, engine="python", encoding="utf-8")
+        df = pd.read_csv(RUTA_CSV, sep=None, engine="python", encoding="utf-8-sig")
     except UnicodeDecodeError:
         df = pd.read_csv(RUTA_CSV, sep=None, engine="python", encoding="latin-1")
-
-    #utilizo tryexcept por si viene con codificacion y los acentos raros, que a veces pasa en datos de admin.
 
     print(f"Leídas {len(df)} filas y {len(df.columns)} columnas")
     print("\nColumnas:")
@@ -25,6 +24,7 @@ def extract():
     print("\nValores nulos por columna:")
     print(df.isnull().sum())
     return df
+
 
 if __name__ == "__main__":
     extract()
